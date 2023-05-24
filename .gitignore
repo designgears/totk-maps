@@ -1,0 +1,17 @@
+.idea
+.DS_Store
+.vscode
+ASEngine/ASConfig.php
+install
+composer.json
+composer.lock
+package-lock.json
+ASE
+data.json
+markers.json
+out.json
+strings.json
+process_json.php
+process_xml.php
+process_yml.php
+RandomColor.php
