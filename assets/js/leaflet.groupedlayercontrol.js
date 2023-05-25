@@ -372,8 +372,6 @@ L.Control.GroupedLayers = L.Control.extend({
 
     var inputs = this_legend._form.getElementsByTagName('input');
 
-    console.log(inputs)
-
     for (var input of inputs) {
       if (input.groupID === this.groupID && input.className === 'leaflet-control-layers-selector') {
         input.checked = this.checked;
