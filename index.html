@@ -108,6 +108,12 @@
             border-top: 1px solid rgb(104, 101, 97) !important;
         }
 
+        .leaflet-control-layers-group-label input[type=checkbox] {
+            vertical-align: middle;
+            float: right;
+            margin: 2px 2px 2px 0;
+        }
+
         #map {
             height: 100vh;
             width: 100vw;
@@ -277,7 +283,7 @@
             });
 
             var menu_options = {
-                groupCheckboxes: false,
+                groupCheckboxes: true,
                 collapsed: false,
                 groupsCollapsable: true,
                 groupsExpandedClass: 'bi bi-caret-down-square-fill',
