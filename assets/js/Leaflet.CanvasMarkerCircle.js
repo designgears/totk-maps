@@ -21,7 +21,7 @@ L.canvasMarkerCircle = L.Path.extend({
             layer._check.anchorHeight = 6;
             layer.redraw();
         }
-        this._check.src = '/assets/img/check.png';
+        this._check.src = '/assets/img/check2.png';
 
         this.on('contextmenu', function (e) {
             if ('completed' in e.target.feature.properties && e.target.feature.properties.completed) {
@@ -107,7 +107,7 @@ L.Canvas.include({
         ctx.stroke();
 
         if (layer.feature.properties.completed) {
-            ctx.drawImage(layer._check, p.x - 2, p.y - 3);
+            ctx.drawImage(layer._check, p.x - 5, p.y - 5);
         }
         
     }
