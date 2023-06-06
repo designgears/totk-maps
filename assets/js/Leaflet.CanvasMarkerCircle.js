@@ -97,6 +97,8 @@ L.Canvas.include({
         if (layer._empty()) { return; }
         var p = layer._point,
             ctx = this._ctx;
+        
+        ctx.save();
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, 5, 0, 2 * Math.PI, false);
@@ -109,6 +111,7 @@ L.Canvas.include({
         if (layer.feature.properties.completed) {
             ctx.drawImage(layer._check, p.x - 5, p.y - 5);
         }
-        
+
+        ctx.restore();
     }
 });
