@@ -171,10 +171,6 @@
             }
         }
 
-        function x(coords) {
-            return zeldaMap.unproject([coords[0], coords[1]], 8);
-        }
-
         var tileSize = 256,
             factorx = 1 / (tileSize / 3), // 3 image pixels per game unit
             factory = 1 / (tileSize / 3),
@@ -235,6 +231,7 @@
                 layer.bindPopup(
                     feature.properties.title
                     +'<br />'+feature.properties.description
+                    +'<br />'+feature.properties.position
                 )
             }
 
