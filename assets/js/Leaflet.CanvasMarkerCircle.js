@@ -19,7 +19,6 @@ L.canvasMarkerCircle = L.Path.extend({
         this._check.onload = function() {
             layer._check.anchorWidth = 6;
             layer._check.anchorHeight = 6;
-            layer.redraw();
         }
         this._check.src = '/assets/img/check2.png';
 
