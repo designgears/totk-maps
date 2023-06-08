@@ -6,5 +6,6 @@ install
 composer.lock
 ASE
 *.json
+!data.json
 process*.php
 RandomColor.php
