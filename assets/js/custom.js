@@ -1,34 +1,4 @@
 $.ajaxSetup({ cache: false });
-var completedMarkers = [];
-
-Storage.prototype.setObj = function(key, obj) {
-    return this.setItem(key, JSON.stringify(obj))
-}
-Storage.prototype.getObj = function(key) {
-    return JSON.parse(this.getItem(key))
-}
-
-if (localStorage.getItem("completedMarkers") !== '' && localStorage.getObj("completedMarkers") !== null) {
-    completedMarkers = localStorage.getObj("completedMarkers");
-} else {
-    localStorage.setObj("completedMarkers", completedMarkers);
-}
-
-function completeMarker(feature) {
-    var index = completedMarkers.indexOf(feature.properties.hash);
-    if (index == -1) {
-        completedMarkers.push(feature.properties.hash);
-        localStorage.setObj("completedMarkers", completedMarkers);
-    }
-}
-
-function removeCompleteMarker(feature) {
-    var index = completedMarkers.indexOf(feature.properties.hash);
-    if (index > -1) {
-        completedMarkers.splice(index, 1);
-        localStorage.setObj("completedMarkers", completedMarkers);
-    }
-}
 
 var tileSize = 256,
     factorx = 1 / (tileSize / 3), // 3 image pixels per game unit
@@ -88,9 +58,12 @@ function onEachFeature(feature, layer) {
 
     if (feature.properties.title && feature.properties.category != 'Labels') {
         layer.bindPopup(
-            feature.properties.title
+            '<div>'
+            +feature.properties.title
             +'<br />'+feature.properties.description
             +'<br />'+feature.properties.position
+            +'<br /><span class="status">'+feature.properties.completed+'</span>'
+            +'</div>'
         )
     }
 
@@ -99,10 +72,6 @@ function onEachFeature(feature, layer) {
 }
 
 function pointToLayer(feature, latlng) {
-
-    if (completedMarkers.indexOf(feature.properties.hash) > -1 ) {
-        feature.properties.completed = true;
-    }
 
     addToOverlays(feature.properties.map, feature.properties.category, feature.properties.subcat);
 

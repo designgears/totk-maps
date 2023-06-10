@@ -9,6 +9,7 @@ L.CanvasMarker = L.Path.extend({
 
     initialize: function (latlng, options) {
         L.setOptions(this, options);
+
         var layer = this;
         this._latlng = L.latLng(latlng);
 
@@ -30,20 +31,71 @@ L.CanvasMarker = L.Path.extend({
         this._check.src = '/assets/img/check.png';
 
         this.on('contextmenu', function (e) {
-            if ('completed' in e.target.feature.properties && e.target.feature.properties.completed) {
-                e.target.feature.properties.completed = false;
-                removeCompleteMarker(this.feature);
-            } else {
-                e.target.feature.properties.completed = true;
-                completeMarker(this.feature);
-            }
-            layer.redraw();
+            this._markComplete(e);
         });
 
         this.on('click', function (e) {
             this.bringToFront();
         });
 
+        if (localStorage.getItem("completedMarkers") == null) {
+            this._setCompletedMarkersObj("completedMarkers", []);
+        }
+
+    },
+
+    _markComplete: function (e) {
+        var popup = e.target.getPopup();
+        var content = this._parseStringToHTML(popup.getContent());
+        if ('completed' in e.target.feature.properties && e.target.feature.properties.completed) {
+            e.target.feature.properties.completed = false;
+            this._removeCompletedMarker(this.feature.properties.hash);
+            content.querySelector('.status').innerHTML = 'Incomplete'
+        } else {
+            e.target.feature.properties.completed = true;
+            this._addCompletedMarker(this.feature.properties.hash);
+            content.querySelector('.status').innerHTML = 'Complete'
+        }
+        popup.setContent(this._parseHTMLtoString(content));
+        this.redraw();
+    },
+
+    _parseStringToHTML: function (html) {
+        var t = document.createElement('template');
+        t.innerHTML = html;
+        return t.content;
+    },
+
+    _parseHTMLtoString: function (e) {
+        var d = document.createElement('div');
+        d.appendChild(e.cloneNode(true));
+        return d.innerHTML;
+    },
+
+    _setCompletedMarkersObj: function(key, obj) {
+        return localStorage.setItem(key, JSON.stringify(obj))
+    },
+
+    _getCompletedMarkersObj: function(key) {
+        return JSON.parse(localStorage.getItem(key))
+    },
+
+    _addCompletedMarker: function (hash) {
+        var completedMarkers = this._getCompletedMarkersObj("completedMarkers");
+        var index = completedMarkers.indexOf(hash);
+        if (index == -1) {
+            completedMarkers.push(hash);
+            this._setCompletedMarkersObj("completedMarkers", completedMarkers);
+        }
+    },
+
+    _removeCompletedMarker: function (hash) {
+        var completedMarkers = this._getCompletedMarkersObj("completedMarkers");
+        var index = completedMarkers.indexOf(hash);
+        if (index > -1) {
+            completedMarkers.splice(index, 1);
+            this._setCompletedMarkersObj("completedMarkers", completedMarkers);
+        }
     },
 
     setLatLng: function (latlng) {
