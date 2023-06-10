@@ -3,6 +3,7 @@ L.CanvasMarker = L.Path.extend({
         stroke: false,
         iconAnchor: false,
         icon: false,
+        color: false,
         interactive: true
     },
 
@@ -21,33 +22,23 @@ L.CanvasMarker = L.Path.extend({
                     layer._icon.anchorWidth = layer.options.iconAnchor[0];
                     layer._icon.anchorHeight = layer.options.iconAnchor[1];
                 }
-                layer.redraw();
             }
             this._icon.src = this.options.icon;
-        
-            // Completed Mark
-            this._check = new Image();
-            this._check.onload = function() {
-                if (!layer.options.iconAnchor) {
-                    layer._check.anchorWidth = this.width / 2;
-                    layer._check.anchorHeight = this.height / 2;
-                }
-                layer.redraw();
-            }
-            this._check.src = '/assets/img/check.png';
-
-            this.on('contextmenu', function (e) {
-                if ('completed' in e.target.feature.properties && e.target.feature.properties.completed) {
-                    e.target.feature.properties.completed = false;
-                    removeCompleteMarker(this.feature);
-                } else {
-                    e.target.feature.properties.completed = true;
-                    completeMarker(this.feature);
-                }
-                layer.redraw();
-            });
-
         }
+
+        this._check = new Image();
+        this._check.src = '/assets/img/check.png';
+
+        this.on('contextmenu', function (e) {
+            if ('completed' in e.target.feature.properties && e.target.feature.properties.completed) {
+                e.target.feature.properties.completed = false;
+                removeCompleteMarker(this.feature);
+            } else {
+                e.target.feature.properties.completed = true;
+                completeMarker(this.feature);
+            }
+            layer.redraw();
+        });
 
         this.on('click', function (e) {
             this.bringToFront();
@@ -112,10 +103,10 @@ L.CanvasMarker = L.Path.extend({
                 (p.y-(tY-this._icon.anchorHeight) <= this._point.y + tY) &&
                 (p.y-(tY-this._icon.anchorHeight) >= this._point.y - tY);
         } else {
-            var tX = 12,
-                tY = 12,
-                anchorWidth = 12,
-                anchorHeight = 12;
+            var tX = 8,
+                tY = 8,
+                anchorWidth = 8,
+                anchorHeight = 8;
 
             return (p.x-(tX-anchorWidth) <= this._point.x + tX) &&
                 (p.x-(tX-anchorWidth) >= this._point.x - tX) &&
@@ -134,47 +125,38 @@ L.Canvas.include({
     _updateCanvasMarker: function (layer) {
         if (layer._empty()) { return; }
         var p = layer._point,
-            ctx = this._ctx;
+            ctx = this._ctx,
+            currentZoom = layer._map.getZoom(),
+            radius = 5;
+
+        ctx.save();
 
         if (layer.options.icon) {
-            // icon rendering
-            ctx.drawImage(layer._icon, p.x - layer._icon.anchorWidth, p.y - layer._icon.anchorHeight);
-            if (layer.feature.properties.completed) {
-                ctx.drawImage(layer._check, p.x - 2, p.y - 3);
+            if (currentZoom > 2) {
+                ctx.drawImage(layer._icon, p.x - layer._icon.anchorWidth, p.y - layer._icon.anchorHeight);
+            } else {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI, false);
+                ctx.fillStyle = layer.options.color;
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
             }
-            this._fillStroke(ctx, layer);
         } else {
-
-            var maxFontSize = 100;
-            var maxZoom = layer._map.getMaxZoom();
-            var currentZoom = layer._map.getZoom();
-
-            if (currentZoom < 5) {
-                return;
-            }
-
-            var fontSize = maxFontSize / (Math.pow(2, (maxZoom - currentZoom)));
-
-            // text redering
-            ctx.textRendering = "optimizeLegibility";
-            ctx.globalCompositeOperation = 'destination-over';
-            ctx.font = fontSize +"px OpenSans";
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillStyle = "#d4ce46";
-
-            ctx.shadowColor = "rgba(0,0,0,0.85)";
-            ctx.shadowBlur = 4;
-
-            ctx.fillText(layer.feature.properties.title, p.x, p.y);
-
-            // reset so settings don't apply to other elements
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.shadowColor = "transparent";
-            ctx.shadowBlur = 0;
-            ctx.globalCompositeOperation = 'source-over';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = layer.options.color;
+            ctx.fill();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
         }
-        
+
+        if (layer.feature.properties.completed) {
+            ctx.drawImage(layer._check, p.x - 7, p.y - 7);
+        }
+
+        ctx.restore();
     }
 });

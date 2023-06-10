@@ -106,18 +106,11 @@ function pointToLayer(feature, latlng) {
 
     addToOverlays(feature.properties.map, feature.properties.category, feature.properties.subcat);
 
-    if (feature.properties.radius) {
-        return L.circle(latlng, {
-            radius: feature.properties.radius
-        });
-    } else if (feature.properties.category == 'Labels') {
-        return L.canvasMarker(latlng, markers[feature.properties.category]);
-    } else {
-        var markerOptions = {
-            color: feature.properties.color
-        }
-        return new L.canvasMarkerCircle(latlng, markerOptions);
+    var markerOptions = {
+        icon: feature.properties.icon,
+        color: feature.properties.color
     }
+    return L.canvasMarker(latlng, markerOptions);
 }
 
 function addToOverlays(map, category, subcat) {
