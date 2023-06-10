@@ -1,0 +1,86 @@
+
+@font-face {
+    font-family: 'Hylia Serif Beta';
+    src: url('/assets/fonts/HyliaSerifBeta-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url('/assets/fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    font-family: 'OpenSans';
+}
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.leaflet-control-layers-group > .leaflet-control-layers-group-label {
+    text-decoration: underline;
+}
+
+.leaflet-control-layers-group > label:not(.leaflet-control-layers-group-label) {
+    font-style: italic;
+    margin-left: 10px;
+}
+
+.leaflet-control-layers-expanded {
+    min-width: 220px;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-control-attribution,
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip,
+.leaflet-tooltip,
+.leaflet-control {
+    background-color: rgb(24, 26, 27) !important;
+    color: rgb(200, 195, 188) !important;
+    border: 0 !important;
+}
+
+.leaflet-tooltip-bottom:before {
+    border-color: transparent transparent rgb(24, 26, 27) transparent !important;
+}
+
+.leaflet-control-zoom-in {
+    border-bottom: 1px solid rgb(104, 101, 97) !important;
+}
+
+.leaflet-control-layers-separator {
+    border-top: 1px solid rgb(104, 101, 97) !important;
+}
+
+.leaflet-control-layers-group-label input[type=checkbox] {
+    vertical-align: middle;
+    float: right;
+    margin: 2px 2px 2px 0;
+}
+
+#map {
+    height: 100vh;
+    width: 100vw;
+    background: #222 url('/assets/images/totk-back.jpg');
+}
