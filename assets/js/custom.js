@@ -62,7 +62,7 @@ function onEachFeature(feature, layer) {
             +feature.properties.title
             +'<br />'+feature.properties.description
             +'<br />'+feature.properties.position
-            +'<br /><span class="status">'+feature.properties.completed+'</span>'
+            +'<br /><span class="status">'+ (feature.properties.completed ? 'Complete' : 'Incomplete') +'</span>'
             +'</div>'
         )
     }
