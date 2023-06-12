@@ -178,23 +178,12 @@ L.Canvas.include({
         if (layer._empty()) { return; }
         var p = layer._point,
             ctx = this._ctx,
-            currentZoom = layer._map.getZoom(),
             radius = 5;
 
         ctx.save();
 
         if (layer.options.icon) {
-            if (currentZoom > 2) {
-                ctx.drawImage(layer._icon, p.x - layer._icon.anchorWidth, p.y - layer._icon.anchorHeight);
-            } else {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI, false);
-                ctx.fillStyle = layer.options.color;
-                ctx.fill();
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = '#000000';
-                ctx.stroke();
-            }
+            ctx.drawImage(layer._icon, p.x - layer._icon.anchorWidth, p.y - layer._icon.anchorHeight);
         } else {
             ctx.beginPath();
             ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI, false);
