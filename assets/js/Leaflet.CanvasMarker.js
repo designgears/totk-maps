@@ -17,11 +17,11 @@ L.CanvasMarker = L.Path.extend({
             this._icon = new Image();
             this._icon.onload = function() {
                 if (!layer.options.iconAnchor) {
-                    layer._icon.anchorWidth = this.width / 2;
-                    layer._icon.anchorHeight = this.height / 2;
+                    layer._icon.anchorWidth = Math.round(this.width / 2);
+                    layer._icon.anchorHeight = Math.round(this.height / 2);
                 } else {
-                    layer._icon.anchorWidth = layer.options.iconAnchor[0];
-                    layer._icon.anchorHeight = layer.options.iconAnchor[1];
+                    layer._icon.anchorWidth = Math.round(layer.options.iconAnchor[0]);
+                    layer._icon.anchorHeight = Math.round(layer.options.iconAnchor[1]);
                 }
             }
             this._icon.src = this.options.icon;
@@ -147,23 +147,23 @@ L.CanvasMarker = L.Path.extend({
 
     _containsPoint: function (p) {
         if (this.options.icon) {
-            var tX = this._icon.width / 2,
-                tY = this._icon.height / 2;
+            var tX = Math.round(this._icon.width / 2),
+                tY = Math.round(this._icon.height / 2);
             
-            return (p.x-(tX-this._icon.anchorWidth) <= this._point.x + tX) &&
-                (p.x-(tX-this._icon.anchorWidth) >= this._point.x - tX) &&
-                (p.y-(tY-this._icon.anchorHeight) <= this._point.y + tY) &&
-                (p.y-(tY-this._icon.anchorHeight) >= this._point.y - tY);
+            return (p.x - (tX - this._icon.anchorWidth) <= this._point.x + tX) &&
+                (p.x -(tX - this._icon.anchorWidth) >= this._point.x - tX) &&
+                (p.y -(tY - this._icon.anchorHeight) <= this._point.y + tY) &&
+                (p.y -(tY - this._icon.anchorHeight) >= this._point.y - tY);
         } else {
             var tX = 8,
                 tY = 8,
                 anchorWidth = 8,
                 anchorHeight = 8;
 
-            return (p.x-(tX-anchorWidth) <= this._point.x + tX) &&
-                (p.x-(tX-anchorWidth) >= this._point.x - tX) &&
-                (p.y-(tY-anchorHeight) <= this._point.y + tY) &&
-                (p.y-(tY-anchorHeight) >= this._point.y - tY);
+            return (p.x - (tX - anchorWidth) <= this._point.x + tX) &&
+                (p.x - (tX - anchorWidth) >= this._point.x - tX) &&
+                (p.y - (tY - anchorHeight) <= this._point.y + tY) &&
+                (p.y - (tY - anchorHeight) >= this._point.y - tY);
         }
     },
 
