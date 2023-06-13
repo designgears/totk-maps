@@ -60,11 +60,11 @@ function onEachFeature(feature, layer) {
         layer.bindPopup(
             '<div>'
             +feature.properties.title
-            +'<br />'+feature.properties.description
+            +(feature.properties.description != '' ? '<br />'+feature.properties.description : '')
             +'<br />'+feature.properties.position
             +'<br /><span class="status">'+ (feature.properties.completed ? 'Complete' : 'Incomplete') +'</span>'
             +'</div>'
-        )
+        ).bindTooltip(feature.properties.title);
     }
 
     layer.addTo(groupedOverlays[feature.properties.map][feature.properties.category][feature.properties.subcat]);

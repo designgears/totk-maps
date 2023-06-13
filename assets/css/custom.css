@@ -61,6 +61,18 @@ canvas {
     border: 0 !important;
 }
 
+.leaflet-tooltip-right:before {
+    border-color: transparent rgb(24, 26, 27) transparent transparent !important;
+}
+
+.leaflet-tooltip-left:before {
+    border-color: transparent transparent transparent rgb(24, 26, 27) !important;
+}
+
+.leaflet-tooltip-top:before {
+    border-color: rgb(24, 26, 27) transparent transparent transparent !important;
+}
+
 .leaflet-tooltip-bottom:before {
     border-color: transparent transparent rgb(24, 26, 27) transparent !important;
 }
