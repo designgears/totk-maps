@@ -41,20 +41,10 @@ var sky = L.tileLayer(tile_url + 'sky_complete/{z}/{x}/{y}.png', { maxNativeZoom
         "Depths": depths,
     };
 
-var fuseOptions = {
-    position: 'topleft',
-    maxResultLength: 50,
-    threshold: 0.2,
-    showInvisibleFeatures: false,
-};
-
-// var searchCtrl = L.control.fuseSearch(fuseOptions).addTo(zeldaMap);
 sky.addTo(zeldaMap);
 new L.Hash(zeldaMap);
 
 function onEachFeature(feature, layer) {
-
-    feature.layer = layer;
 
     if (feature.properties.title && feature.properties.category != 'Labels') {
         layer.bindPopup(
@@ -110,7 +100,6 @@ $.getJSON("/data.json", function(markers) {
     };
 
     control = L.control.groupedLayers(baseLayers, groupedOverlays['Sky'], menu_options).addTo(zeldaMap);
-    //searchCtrl.indexFeatures(markers, ['title', 'contents']);
 });
 
 zeldaMap.on('baselayerchange', (e) => {
