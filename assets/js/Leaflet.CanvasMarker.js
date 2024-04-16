@@ -1,7 +1,8 @@
 L.CanvasMarker = L.Path.extend({
     options: {
         icon: false,
-        iconAnchor: false
+        iconAnchor: false,
+        bringToFront: 'click'
     },
 
     initialize: function (latlng, options) {
@@ -29,7 +30,7 @@ L.CanvasMarker = L.Path.extend({
             this._markComplete(e);
         });
 
-        this.on('click', function (e) {
+        this.on(layer.options.bringToFront, function (e) {
             this.bringToFront();
         });
 
