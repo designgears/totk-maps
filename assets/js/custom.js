@@ -67,7 +67,7 @@ function pointToLayer(feature, latlng) {
 
     var markerOptions = {
         icon: feature.properties.icon,
-        color: feature.properties.color
+        bringToFront: 'mouseover'
     }
     return L.canvasMarker(latlng, markerOptions);
 }
