@@ -30,7 +30,7 @@ L.CanvasMarker = L.Path.extend({
             this._markComplete(e);
         });
 
-        this.on(layer.options.bringToFront, function (e) {
+        this.on(this.options.bringToFront, function (e) {
             this.bringToFront();
         });
 
