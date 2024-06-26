@@ -55,12 +55,12 @@ L.CanvasMarker = L.Path.extend({
     _markComplete: function (e) {
         var popup = e.target.getPopup();
         var content = this._parseStringToHTML(popup.getContent());
-        if ('completed' in e.target.feature.properties && e.target.feature.properties.completed) {
-            e.target.feature.properties.completed = false;
+        if ('completed' in this.options && this.options.completed) {
+            this.options.completed = false;
             this._removeCompletedMarker(this.feature.properties.hash);
             content.querySelector('.status').innerHTML = 'Incomplete'
         } else {
-            e.target.feature.properties.completed = true;
+            this.options.completed = true;
             this._addCompletedMarker(this.feature.properties.hash);
             content.querySelector('.status').innerHTML = 'Complete'
         }
