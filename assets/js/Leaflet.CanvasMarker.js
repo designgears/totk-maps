@@ -8,6 +8,10 @@ L.CanvasMarker = L.Path.extend({
     initialize: function (latlng, options) {
         L.setOptions(this, options);
 
+        if (localStorage.getItem("completedMarkers") == null) {
+            this._setCompletedMarkersObj("completedMarkers", []);
+        }
+
         var layer = this;
         this._latlng = L.latLng(latlng);
 
@@ -23,8 +27,11 @@ L.CanvasMarker = L.Path.extend({
         }
         this._icon.src = this.options.icon;
 
+        
+
         this._check = new Image();
         this._check.src = '/assets/img/check.png';
+        this._isComplete(layer);
 
         this.on('contextmenu', function (e) {
             this._markComplete(e);
@@ -34,10 +41,15 @@ L.CanvasMarker = L.Path.extend({
             this.bringToFront();
         });
 
-        if (localStorage.getItem("completedMarkers") == null) {
-            this._setCompletedMarkersObj("completedMarkers", []);
-        }
+    },
 
+    _isComplete: function (layer) {
+        var completedMarkers = this._getCompletedMarkersObj("completedMarkers");
+        if (completedMarkers.indexOf(layer.options.hash) > -1 ) {
+            layer.options.completed = true;
+        } else {
+            layer.options.completed = false;
+        }
     },
 
     _markComplete: function (e) {
