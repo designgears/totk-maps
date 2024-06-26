@@ -170,7 +170,7 @@ L.Canvas.include({
         ctx.save();
 
         ctx.drawImage(layer._icon, p.x - layer._icon.anchorWidth, p.y - layer._icon.anchorHeight);
-        if (layer.feature.properties.completed) {
+        if (layer.options.completed) {
             ctx.drawImage(layer._check, p.x - 7, p.y - 7);
         }
 
