@@ -158,8 +158,7 @@ canvas {
 }
 
 .leaflet-control-layers-separator {
-    border-top: 1px solid rgba(251, 191, 36, 0.3) !important;
-    margin: 12px 0 !important;
+    display: none;
 }
 
 .leaflet-control-layers-group-label input[type=checkbox] {
