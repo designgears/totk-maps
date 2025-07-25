@@ -5,7 +5,7 @@ const CONFIG = {
     TILE_SIZE: 256,
     IMAGE_HEIGHT: 30000,
     IMAGE_WIDTH: 36000,
-    TILE_URL: './totk-map-assets/tiles/',
+    TILE_URL: 'https://raw.githubusercontent.com/designgears/totk-map-assets/main/tiles/',
     DATA_URL: '/data.json',
     DEFAULT_VIEW: { lat: -1432, lng: 395, zoom: 5 }
 };
