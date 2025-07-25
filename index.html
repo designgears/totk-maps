@@ -25,19 +25,90 @@
 
     <title>ExploreZelda: Tears of the Kingdom Interactive Map</title>
 
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" />
+    <!-- Tailwind CSS 4 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'hylia': ['Hylia Serif Beta', 'serif'],
+              'opensans': ['OpenSans', 'sans-serif']
+            },
+            colors: {
+              'hyrule': {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+                800: '#075985',
+                900: '#0c4a6e'
+              },
+              'triforce': {
+                50: '#fffbeb',
+                100: '#fef3c7',
+                200: '#fde68a',
+                300: '#fcd34d',
+                400: '#fbbf24',
+                500: '#f59e0b',
+                600: '#d97706',
+                700: '#b45309',
+                800: '#92400e',
+                900: '#78350f'
+              },
+              'sheikah': {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+              }
+            }
+          }
+        }
+      }
+    </script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/leaflet.groupedlayercontrol.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/custom.css" />
   </head>
 
-  <body>
+  <body class="bg-sheikah-900 font-opensans overflow-hidden">
+    <!-- Header with Zelda-inspired design -->
+    <header class="relative z-[100] bg-gradient-to-r from-sheikah-800/90 to-sheikah-700/90 backdrop-blur-sm border-b border-triforce-500/30">
+      <div class="flex items-center justify-between px-6 py-4">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-hylia text-triforce-300 tracking-wide">
+            ExploreZelda
+          </h1>
+        </div>
+      </div>
+    </header>
 
-    <div id="map"></div>
+    <!-- Map container with enhanced styling -->
+    <div id="map" class="relative w-full h-screen"></div>
+    
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-sheikah-900/95 backdrop-blur-sm z-50 flex items-center justify-center">
+      <div class="text-center">
+        <div class="w-16 h-16 border-4 border-triforce-500/30 border-t-triforce-400 rounded-full animate-spin mx-auto mb-4"></div>
+        <h2 class="text-xl font-hylia text-triforce-300 mb-2">Loading Hyrule...</h2>
+        <p class="text-hyrule-400">Preparing your adventure</p>
+      </div>
+    </div>
+
+
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet-src.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-hash/0.2.1/leaflet-hash.js"></script>
     <script type="text/javascript" src="assets/js/Leaflet.CanvasMarker.js"></script>

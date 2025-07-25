@@ -1,4 +1,6 @@
 
+/* Zelda-inspired Custom Styles with Tailwind Integration */
+
 @font-face {
     font-family: 'Hylia Serif Beta';
     src: url('/assets/fonts/HyliaSerifBeta-Regular.otf') format('opentype');
@@ -15,8 +17,9 @@
     font-display: swap;
 }
 
+/* Base styles */
 * {
-    font-family: 'OpenSans';
+    font-family: 'OpenSans', sans-serif;
 }
 
 html, body {
@@ -24,6 +27,16 @@ html, body {
     width: 100vw;
     margin: 0;
     padding: 0;
+}
+
+/* Ensure header stays visible and fixed */
+header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
 }
 
 canvas {
@@ -36,63 +49,389 @@ canvas {
     user-select: none;
 }
 
-.leaflet-control-layers-group > .leaflet-control-layers-group-label {
-    text-decoration: underline;
+/* Map container with Zelda-inspired background */
+#map {
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%), url('/assets/images/totk-back.jpg');
+    background-blend-mode: overlay;
+    background-size: cover;
+    background-position: center;
+    z-index: 10;
+    position: relative;
 }
 
-.leaflet-control-layers-group > label:not(.leaflet-control-layers-group-label) {
-    font-style: italic;
-    margin-left: 10px;
-}
-
-.leaflet-control-layers-expanded {
-    min-width: 220px;
-}
-
+/* Enhanced Leaflet Controls with Zelda theming */
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out,
 .leaflet-control-attribution,
-.leaflet-popup-content-wrapper,
-.leaflet-popup-tip,
-.leaflet-tooltip,
 .leaflet-control {
-    background-color: rgb(24, 26, 27) !important;
-    color: rgb(200, 195, 188) !important;
-    border: 0 !important;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.9) 100%) !important;
+    color: #fcd34d !important;
+    border: 1px solid rgba(251, 191, 36, 0.3) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(8px) !important;
+    transition: all 0.3s ease !important;
+    z-index: 50 !important;
 }
 
-.leaflet-tooltip-right:before {
-    border-color: transparent rgb(24, 26, 27) transparent transparent !important;
-}
-
-.leaflet-tooltip-left:before {
-    border-color: transparent transparent transparent rgb(24, 26, 27) !important;
-}
-
-.leaflet-tooltip-top:before {
-    border-color: rgb(24, 26, 27) transparent transparent transparent !important;
-}
-
-.leaflet-tooltip-bottom:before {
-    border-color: transparent transparent rgb(24, 26, 27) transparent !important;
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+    background: linear-gradient(135deg, rgba(51, 65, 85, 0.95) 0%, rgba(71, 85, 105, 0.9) 100%) !important;
+    border-color: rgba(251, 191, 36, 0.5) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.4), 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
 }
 
 .leaflet-control-zoom-in {
-    border-bottom: 1px solid rgb(104, 101, 97) !important;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.4) !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+.leaflet-control-zoom-out {
+    border-radius: 0 0 8px 8px !important;
+}
+
+/* Layer Control Styling */
+.leaflet-control-layers {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%) !important;
+    border: 1px solid rgba(251, 191, 36, 0.3) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(12px) !important;
+    z-index: 50 !important;
+    padding: 0 !important;
+}
+
+.leaflet-left, .leaflet-right {
+    margin-top: 80px !important;
+}
+
+.leaflet-control-layers-expanded {
+    width: 280px !important;
+    max-height: calc(100vh - 120px) !important;
+    overflow-y: auto !important;
+    scrollbar-gutter: auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.leaflet-control-layers-toggle {
+    background-image: none !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    position: relative !important;
+}
+
+.leaflet-control-layers-toggle::before {
+    content: '⚔️';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+}
+
+/* Group Labels with Zelda styling */
+.leaflet-control-layers-group > .leaflet-control-layers-group-label {
+    color: #fbbf24 !important;
+    font-weight: 600 !important;
+    font-family: 'Hylia Serif Beta', serif !important;
+    text-decoration: none !important;
+    border-bottom: 2px solid rgba(251, 191, 36, 0.3) !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+}
+
+.leaflet-control-layers-group > label:not(.leaflet-control-layers-group-label) {
+    color: #7dd3fc !important;
+    font-style: normal !important;
+    margin-left: 8px !important;
+    padding: 4px 0 !important;
+    transition: color 0.2s ease !important;
+}
+
+.leaflet-control-layers-group > label:not(.leaflet-control-layers-group-label):hover {
+    color: #38bdf8 !important;
 }
 
 .leaflet-control-layers-separator {
-    border-top: 1px solid rgb(104, 101, 97) !important;
+    border-top: 1px solid rgba(251, 191, 36, 0.3) !important;
+    margin: 12px 0 !important;
 }
 
 .leaflet-control-layers-group-label input[type=checkbox] {
     vertical-align: middle;
     float: right;
     margin: 2px 2px 2px 0;
+    accent-color: #fbbf24;
 }
 
-#map {
-    height: 100vh;
-    width: 100vw;
-    background: #222 url('/assets/images/totk-back.jpg');
+/* Layer control list scrolling */
+.leaflet-control-layers-list {
+    max-height: calc(100vh - 160px) !important;
+    overflow-y: auto !important;
+    scrollbar-gutter: stable !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Add padding to the list content for proper spacing */
+.leaflet-control-layers-list {
+    padding: 12px 14px 12px 12px !important;
+    margin: 0 !important;
+}
+
+/* Move scrollbar slightly off the right edge */
+.leaflet-control-layers-expanded .leaflet-control-layers-scrollbar {
+    margin-right: 8px !important;
+    padding-right: 0 !important;
+}
+
+/* Restore only necessary spacing for readability */
+.leaflet-control-layers-group {
+    margin-bottom: 8px !important;
+}
+
+.leaflet-control-layers-group > .leaflet-control-layers-group-label {
+    margin-bottom: 4px !important;
+}
+
+.leaflet-control-layers-group > label:not(.leaflet-control-layers-group-label) {
+    margin-left: 8px !important;
+    padding: 2px 0 !important;
+}
+
+/* Custom scrollbar for layer control */
+.leaflet-control-layers-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.leaflet-control-layers-list::-webkit-scrollbar-track {
+    background: rgba(51, 65, 85, 0.3);
+    border-radius: 3px;
+}
+
+.leaflet-control-layers-list::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.6);
+    border-radius: 3px;
+}
+
+.leaflet-control-layers-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(251, 191, 36, 0.8);
+}
+
+/* Custom checkboxes and radio buttons */
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: #fbbf24 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Indeterminate checkbox styling */
+input[type="checkbox"]:indeterminate {
+    accent-color: #fbbf24 !important;
+}
+
+/* Ensure indeterminate checkbox text has same styling as other labels */
+.leaflet-control-layers-group-label {
+    color: #fbbf24 !important;
+    font-weight: 600 !important;
+    font-family: 'Hylia Serif Beta', serif !important;
+}
+
+/* Popup and Tooltip Styling */
+.leaflet-popup-content-wrapper {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%) !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(251, 191, 36, 0.3) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(8px) !important;
+    min-width: 280px !important;
+    max-width: 320px !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+
+/* Enhanced Marker Popup Styling */
+.marker-popup {
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+.popup-header {
+    padding: 16px 16px 12px 16px !important;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.2) !important;
+    margin-bottom: 12px !important;
+}
+
+.popup-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: 'Hylia Serif Beta', serif !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #fcd34d !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    line-height: 1.3 !important;
+}
+
+.popup-description {
+    padding: 0 16px 12px 16px !important;
+    color: #cbd5e1 !important;
+    font-style: italic !important;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.1) !important;
+    margin-bottom: 12px !important;
+    line-height: 1.4 !important;
+}
+
+.popup-details {
+    padding: 0 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+.popup-position,
+.popup-status {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 6px 8px !important;
+    background: rgba(51, 65, 85, 0.3) !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(251, 191, 36, 0.1) !important;
+}
+
+.popup-label {
+    font-weight: 500 !important;
+    color: #94a3b8 !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.popup-value {
+    font-weight: 600 !important;
+    color: #e2e8f0 !important;
+    text-align: right !important;
+}
+
+.popup-status .status {
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.2s ease !important;
+}
+
+.popup-status .status-incomplete {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #fca5a5 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.popup-status .status-complete {
+    background: rgba(34, 197, 94, 0.2) !important;
+    color: #86efac !important;
+    border: 1px solid rgba(34, 197, 94, 0.3) !important;
+}
+
+.popup-footer {
+    padding: 12px 16px 16px 16px !important;
+    border-top: 1px solid rgba(251, 191, 36, 0.1) !important;
+    margin-top: 12px !important;
+    text-align: center !important;
+}
+
+.popup-hint {
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-style: italic !important;
+    opacity: 0.8 !important;
+}
+
+.leaflet-popup-tip {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border: 1px solid rgba(251, 191, 36, 0.3) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-tooltip {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%) !important;
+    color: #fcd34d !important;
+    border: 1px solid rgba(251, 191, 36, 0.4) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(6px) !important;
+    font-weight: 500 !important;
+}
+
+.leaflet-tooltip-right:before {
+    border-color: transparent rgba(30, 41, 59, 0.9) transparent transparent !important;
+}
+
+.leaflet-tooltip-left:before {
+    border-color: transparent transparent transparent rgba(30, 41, 59, 0.9) !important;
+}
+
+.leaflet-tooltip-top:before {
+    border-color: rgba(30, 41, 59, 0.9) transparent transparent transparent !important;
+}
+
+.leaflet-tooltip-bottom:before {
+    border-color: transparent transparent rgba(30, 41, 59, 0.9) transparent !important;
+}
+
+/* Attribution styling */
+.leaflet-control-attribution {
+    background: rgba(15, 23, 42, 0.8) !important;
+    color: #94a3b8 !important;
+    font-size: 11px !important;
+    border-radius: 6px 0 0 0 !important;
+}
+
+.leaflet-control-attribution a {
+    color: #7dd3fc !important;
+}
+
+/* Loading animation enhancement */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.6);
+    }
+}
+
+#loading-overlay .animate-spin {
+    animation: spin 1s linear infinite, pulse-glow 2s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .leaflet-control-layers-expanded {
+        min-width: 240px !important;
+        max-width: 280px !important;
+    }
+    
+    header h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    header .hidden {
+        display: none !important;
+    }
 }
