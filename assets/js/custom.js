@@ -20,15 +20,6 @@ L.CRS.Zelda = L.extend({}, L.CRS.Simple, {
     transformation: new L.Transformation(factorX, 70.31, -factorY, 58.59)
 });
 
-// Patch L.Canvas to support smooth zooming by redrawing instead of CSS scaling
-L.Canvas.include({
-    _onZoom: function () {
-        // Force update (redraw) on every zoom event to allow smooth icon scaling
-        // This replaces the default behavior of using CSS transforms
-        this._update();
-    }
-});
-
 class TotkMapManager {
     constructor() {
         this.overlays = {};
