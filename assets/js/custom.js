@@ -31,7 +31,7 @@ class TotkMapManager {
         this.iconZoomScaling = true;
 
         this.loadingOverlay = null;
-        
+
         this.init();
     }
 
@@ -62,7 +62,10 @@ class TotkMapManager {
             tileSize: CONFIG.TILE_SIZE,
             attributionControl: false,
             crs: L.CRS.Zelda,
-            renderer: L.canvas()
+            renderer: L.canvas(),
+            scrollWheelZoom: false, // disable original zoom function
+            smoothWheelZoom: true,  // enable smooth zoom
+            smoothSensitivity: 1,   // zoom speed. default is 1
         });
 
         // Set map bounds
@@ -99,7 +102,7 @@ class TotkMapManager {
 
         // Set initial current base layer
         this.currentBaseLayer = 'Sky';
-        
+
         // Add default layer
         this.baseLayers['Tears of the Kingdom']['Sky Islands'].addTo(this.map);
     }
@@ -111,7 +114,7 @@ class TotkMapManager {
             this.currentBaseLayer = e.layer.options.name || e.name;
             this.updateLayers();
         });
-        
+
         // Redraw markers when zoom changes (for zoom scaling)
         this.map.on('zoomend', () => {
             if (this.iconZoomScaling) {
@@ -122,11 +125,11 @@ class TotkMapManager {
 
     onEachFeature = (feature, layer) => {
         const { properties } = feature;
-        
+
         if (properties.title && properties.category !== 'Labels') {
             const popupContent = this.createPopupContent(properties);
             layer.bindPopup(popupContent).bindTooltip(properties.title);
-            
+
             // Check completion status after popup is bound
             if (layer._isComplete) {
                 layer._isComplete();
@@ -138,7 +141,7 @@ class TotkMapManager {
 
     createPopupContent(properties) {
         const { title, description, position } = properties;
-        
+
         return `
             <div class="marker-popup">
                 <div class="popup-header">
@@ -164,7 +167,7 @@ class TotkMapManager {
 
     pointToLayer = (feature, latlng) => {
         const { map, category, subcat, icon, hash } = feature.properties;
-        
+
         this.addToOverlays(map, category, subcat);
 
         const markerOptions = {
@@ -172,11 +175,11 @@ class TotkMapManager {
             hash,
             bringToFront: 'mouseover'
         };
-        
-        const marker = L.canvasMarker(latlng, markerOptions);
-        
 
-        
+        const marker = L.canvasMarker(latlng, markerOptions);
+
+
+
         return marker;
     }
 
@@ -199,7 +202,7 @@ class TotkMapManager {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const markers = await response.json();
-            
+
             L.geoJSON(markers, {
                 pointToLayer: this.pointToLayer,
                 onEachFeature: this.onEachFeature
@@ -239,8 +242,8 @@ class TotkMapManager {
         const currentOverlays = this.groupedOverlays[this.currentBaseLayer] || {};
 
         this.control = L.control.groupedLayers(
-            this.baseLayers, 
-            currentOverlays, 
+            this.baseLayers,
+            currentOverlays,
             {
                 ...menuOptions,
                 statePersistence: true,
@@ -292,17 +295,17 @@ class TotkMapManager {
     }
 
     showLoadingOverlay() {
-         this.loadingOverlay = document.getElementById('loading-overlay');
-         if (this.loadingOverlay) {
-             this.loadingOverlay.style.display = 'flex';
-         }
-     }
- 
-     hideLoadingOverlay() {
-         if (this.loadingOverlay) {
-             this.loadingOverlay.style.display = 'none';
-         }
-     }
+        this.loadingOverlay = document.getElementById('loading-overlay');
+        if (this.loadingOverlay) {
+            this.loadingOverlay.style.display = 'flex';
+        }
+    }
+
+    hideLoadingOverlay() {
+        if (this.loadingOverlay) {
+            this.loadingOverlay.style.display = 'none';
+        }
+    }
 
 
 
@@ -321,14 +324,14 @@ class TotkMapManager {
         const ZoomScalingControl = L.Control.extend({
             onAdd: (map) => {
                 const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-                
+
                 container.style.backgroundColor = 'rgba(30, 41, 59, 0.9)';
                 container.style.border = '1px solid rgba(252, 211, 77, 0.3)';
                 container.style.borderRadius = '8px';
                 container.style.padding = '8px 12px';
                 container.style.backdropFilter = 'blur(8px)';
                 container.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-                
+
                 const label = L.DomUtil.create('label', 'zoom-scaling-label', container);
                 label.style.color = '#fcd34d';
                 label.style.fontSize = '14px';
@@ -338,47 +341,47 @@ class TotkMapManager {
                 label.style.gap = '8px';
                 label.style.cursor = 'pointer';
                 label.style.userSelect = 'none';
-                
+
                 const checkbox = L.DomUtil.create('input', '', label);
                 checkbox.type = 'checkbox';
                 checkbox.checked = this.iconZoomScaling;
                 checkbox.style.accentColor = '#fcd34d';
                 checkbox.style.transform = 'scale(1.1)';
-                
+
                 const text = L.DomUtil.create('span', '', label);
                 text.textContent = 'Icon Zoom Scaling';
-                
+
                 // Prevent map events when interacting with control
                 L.DomEvent.disableClickPropagation(container);
                 L.DomEvent.disableScrollPropagation(container);
-                
+
                 // Handle checkbox change
                 L.DomEvent.on(checkbox, 'change', (e) => {
                     this.toggleIconZoomScaling(e.target.checked);
                 }, this);
-                
+
                 return container;
             },
-            
+
             onRemove: (map) => {
                 // Cleanup if needed
             }
         });
-        
+
         this.zoomScalingControl = new ZoomScalingControl({ position: 'topright' });
         this.zoomScalingControl.addTo(this.map);
     }
 
     toggleIconZoomScaling(enabled) {
         this.iconZoomScaling = enabled;
-        
+
         // Save preference to localStorage
         try {
             localStorage.setItem('iconZoomScaling', JSON.stringify(enabled));
         } catch (error) {
             console.error('Failed to save zoom scaling preference:', error);
         }
-        
+
         // Redraw all markers to apply/remove scaling
         this.redrawAllMarkers();
     }
