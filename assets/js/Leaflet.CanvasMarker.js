@@ -70,61 +70,27 @@ L.CanvasMarker = L.Path.extend({
     _isComplete() {
         const completedMarkers = this._getCompletedMarkersObj('completedMarkers');
         this.options.completed = completedMarkers.includes(this.options.hash);
-
-        // Update popup content if it exists
-        if (this.getPopup()) {
-            const content = this._parseStringToHTML(this.getPopup().getContent());
-            const statusElement = content.querySelector('.status');
-            if (statusElement) {
-                statusElement.textContent = this.options.completed ? 'Complete' : 'Incomplete';
-                statusElement.className = this.options.completed ? 'status popup-value status-complete' : 'status popup-value status-incomplete';
-                this.getPopup().setContent(this._parseHTMLtoString(content));
-            }
-        }
     },
 
-    _markComplete(e) {
-        const popup = e.target.getPopup();
-        const content = this._parseStringToHTML(popup.getContent());
-        const statusElement = content.querySelector('.status');
-
-        if (!statusElement) {
-            console.warn('Status element not found in popup content');
-            return;
-        }
-
+    setComplete(completed) {
         const hash = this.options.hash;
         if (!hash) {
             console.warn('No hash found for marker');
-            return;
+            return this;
         }
-
-        if (this.options.completed) {
-            this.options.completed = false;
-            this._removeCompletedMarker(hash);
-            statusElement.textContent = 'Incomplete';
-            statusElement.className = 'status popup-value status-incomplete';
-        } else {
-            this.options.completed = true;
+        this.options.completed = !!completed;
+        if (completed) {
             this._addCompletedMarker(hash);
-            statusElement.textContent = 'Complete';
-            statusElement.className = 'status popup-value status-complete';
+        } else {
+            this._removeCompletedMarker(hash);
         }
-
-        popup.setContent(this._parseHTMLtoString(content));
         this.redraw();
+        this.fire('completechange', { completed: this.options.completed });
+        return this;
     },
 
-    _parseStringToHTML(html) {
-        const template = document.createElement('template');
-        template.innerHTML = html;
-        return template.content;
-    },
-
-    _parseHTMLtoString(element) {
-        const div = document.createElement('div');
-        div.appendChild(element.cloneNode(true));
-        return div.innerHTML;
+    _markComplete() {
+        this.setComplete(!this.options.completed);
     },
 
     _setCompletedMarkersObj(key, obj) {
@@ -246,6 +212,7 @@ L.Canvas.include({
         const scaledAnchorY = Math.round(layer._icon.anchorHeight * scale);
 
         // Draw the main icon with pixel-aligned positioning
+        if (layer.options.completed) ctx.globalAlpha = 0.55;
         ctx.drawImage(
             layer._icon,
             0, 0, layer._icon.width, layer._icon.height,
@@ -257,6 +224,7 @@ L.Canvas.include({
 
         // Draw completion checkmark if completed
         if (layer.options.completed) {
+            ctx.globalAlpha = 1;
             const checkOffset = Math.round(7 * scale);
             const checkSize = Math.round(layer._check.width * scale);
             ctx.drawImage(
