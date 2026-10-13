@@ -19,11 +19,12 @@
 
 :root {
   --bg: #0b1220;
-  --surface: rgba(12, 18, 32, 0.84);
+  --surface: rgba(10, 15, 27, 0.88);
   --surface-2: rgba(255, 255, 255, 0.04);
   --surface-3: rgba(255, 255, 255, 0.08);
-  --line: rgba(245, 200, 75, 0.16);
-  --line-strong: rgba(245, 200, 75, 0.34);
+  --line: rgba(245, 200, 75, 0.2);
+  --line-strong: rgba(245, 200, 75, 0.4);
+  --inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --gold: #f5c84b;
   --gold-soft: #fde9a8;
   --gold-dim: rgba(245, 200, 75, 0.12);
@@ -31,9 +32,9 @@
   --text-2: #b7c0cf;
   --muted: #7f8aa0;
   --ok: #7ee2a8;
-  --radius: 14px;
-  --radius-sm: 10px;
-  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.65), 0 1px 2px rgba(0, 0, 0, 0.4);
   --blur: saturate(140%) blur(14px);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --font-ui: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -87,17 +88,17 @@ button { cursor: pointer; }
 
 /* Zoom control — hidden on touch-first layouts, shown on desktop */
 .leaflet-control-zoom { display: none; }
-.leaflet-bar { border: 0 !important; box-shadow: var(--shadow) !important; border-radius: var(--radius-sm) !important; overflow: hidden; }
+.leaflet-bar { border: 1px solid var(--line) !important; box-shadow: var(--shadow) !important; border-radius: var(--radius-sm) !important; overflow: hidden; }
 .leaflet-bar a {
-  width: 40px !important;
-  height: 40px !important;
-  line-height: 40px !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
   background: var(--surface) !important;
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
   color: var(--gold) !important;
   border-bottom: 1px solid var(--line) !important;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   transition: background 0.15s;
 }
@@ -134,7 +135,7 @@ button { cursor: pointer; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 44px;
+  height: 42px;
   padding: 0 14px 0 12px;
   border-radius: 999px;
   text-decoration: none;
@@ -143,18 +144,15 @@ button { cursor: pointer; }
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), var(--inner);
+  transition: border-color 0.15s;
 }
-.brand-mark {
-  width: 18px; height: 18px;
-  background: var(--gold);
-  clip-path: polygon(50% 0, 100% 100%, 0 100%, 50% 0, 50% 50%, 25% 100%, 75% 100%, 50% 50%);
-  opacity: 0.95;
-}
+.brand:hover { border-color: var(--line-strong); }
+.brand-mark { width: 18px; height: 16px; fill: var(--gold); flex: none; }
 .brand-name {
   font-family: var(--font-display);
-  font-size: 19px;
-  letter-spacing: 0.02em;
+  font-size: 18px;
+  letter-spacing: 0.03em;
   line-height: 1;
   padding-top: 2px;
 }
@@ -163,17 +161,18 @@ button { cursor: pointer; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 44px;
+  height: 42px;
   padding: 0 14px 0 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--surface);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), var(--inner);
   color: var(--text);
   font-weight: 600;
   font-size: 14px;
+  letter-spacing: 0.01em;
   transition: border-color 0.15s, background 0.15s;
 }
 .pill-btn:hover, .pill-btn[aria-expanded="true"] { border-color: var(--line-strong); }
@@ -183,11 +182,12 @@ button { cursor: pointer; }
   height: 20px;
   padding: 0 6px;
   border-radius: 999px;
-  background: var(--gold);
-  color: #1a1405;
+  background: var(--gold-dim);
+  border: 1px solid var(--line-strong);
+  color: var(--gold);
   font-size: 11px;
   font-weight: 700;
-  line-height: 20px;
+  line-height: 18px;
   text-align: center;
 }
 
@@ -199,32 +199,32 @@ button { cursor: pointer; }
   bottom: calc(var(--gutter) + var(--sab));
   transform: translateX(-50%);
   display: inline-flex;
-  padding: 4px;
+  padding: 3px;
   gap: 2px;
   border-radius: 999px;
   background: var(--surface);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  transition: transform 0.35s var(--ease), opacity 0.2s;
+  box-shadow: var(--shadow), var(--inner);
 }
 .realm-btn {
-  height: 38px;
+  height: 34px;
   padding: 0 18px;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: var(--text-2);
   font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0.01em;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
   transition: background 0.2s, color 0.2s;
 }
 .realm-btn:hover { color: var(--text); }
 .realm-btn[aria-pressed="true"] {
   background: var(--gold);
   color: #1a1405;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* ---------- Panel ---------- */
@@ -250,8 +250,8 @@ button { cursor: pointer; }
   -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--line);
   border-bottom: 0;
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -10px 40px -10px rgba(0, 0, 0, 0.7);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -10px 40px -10px rgba(0, 0, 0, 0.7), var(--inner);
   padding-bottom: var(--sab);
   transform: translateY(calc(100% + 20px));
   transition: transform 0.4s var(--ease);
@@ -276,16 +276,16 @@ button { cursor: pointer; }
   margin: 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 20px;
+  font-size: 19px;
   color: var(--gold);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 .panel-actions { display: flex; align-items: center; gap: 2px; }
 .text-btn {
-  height: 36px;
+  height: 32px;
   padding: 0 10px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 7px;
   background: transparent;
   color: var(--text-2);
   font-size: 13px;
@@ -294,11 +294,11 @@ button { cursor: pointer; }
 }
 .text-btn:hover { background: var(--surface-3); color: var(--text); }
 .icon-btn {
-  width: 36px; height: 36px;
+  width: 32px; height: 32px;
   display: inline-grid;
   place-items: center;
   border: 0;
-  border-radius: 8px;
+  border-radius: 7px;
   background: transparent;
   color: var(--text-2);
   transition: background 0.15s, color 0.15s;
@@ -317,8 +317,9 @@ button { cursor: pointer; }
 }
 .panel-search input {
   width: 100%;
-  height: 40px;
-  padding: 0 12px 0 38px;
+  height: 38px;
+  padding: 0 12px 0 36px;
+  font-size: 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: var(--surface-2);
@@ -367,7 +368,7 @@ button { cursor: pointer; }
   align-items: center;
   gap: 8px;
   min-width: 0;
-  height: 44px;
+  height: 42px;
   padding: 0 4px 0 8px;
   border: 0;
   background: transparent;
@@ -382,8 +383,8 @@ button { cursor: pointer; }
 .group[data-open="true"] .group-toggle .chev { transform: rotate(90deg); }
 .group-name {
   font-family: var(--font-display);
-  font-size: 16px;
-  letter-spacing: 0.02em;
+  font-size: 15px;
+  letter-spacing: 0.05em;
   color: var(--gold-soft);
   padding-top: 2px;
   white-space: nowrap;
@@ -425,10 +426,11 @@ button { cursor: pointer; }
   display: grid;
   place-items: center;
   border-radius: 7px;
-  background: var(--surface-3);
+  background: var(--surface-2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   flex: none;
 }
-.layer-icon img { max-width: 20px; max-height: 20px; image-rendering: auto; }
+.layer-icon img { max-width: 18px; max-height: 18px; image-rendering: auto; }
 .layer-name {
   flex: 1 1 auto;
   min-width: 0;
@@ -450,10 +452,10 @@ button { cursor: pointer; }
 .check {
   appearance: none;
   -webkit-appearance: none;
-  width: 20px; height: 20px;
+  width: 18px; height: 18px;
   margin: 0;
   flex: none;
-  border-radius: 6px;
+  border-radius: 5px;
   border: 1.5px solid rgba(245, 200, 75, 0.45);
   background: transparent;
   display: grid;
@@ -463,7 +465,7 @@ button { cursor: pointer; }
 }
 .check::after {
   content: '';
-  width: 10px; height: 10px;
+  width: 9px; height: 9px;
   background: #1a1405;
   clip-path: polygon(14% 44%, 0 62%, 40% 100%, 100% 20%, 86% 6%, 40% 70%);
   transform: scale(0);
@@ -472,7 +474,7 @@ button { cursor: pointer; }
 .check:checked { background: var(--gold); border-color: var(--gold); }
 .check:checked::after { transform: scale(1); }
 .check:indeterminate { background: var(--gold-dim); border-color: var(--gold); }
-.check:indeterminate::after { clip-path: none; width: 10px; height: 2px; border-radius: 1px; background: var(--gold); transform: scale(1); }
+.check:indeterminate::after { clip-path: none; width: 8px; height: 2px; border-radius: 1px; background: var(--gold); transform: scale(1); }
 .check:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* Footer */
@@ -492,7 +494,7 @@ button { cursor: pointer; }
 .switch {
   appearance: none;
   -webkit-appearance: none;
-  width: 40px; height: 24px;
+  width: 38px; height: 22px;
   margin: 0;
   border-radius: 999px;
   background: var(--surface-3);
@@ -504,7 +506,7 @@ button { cursor: pointer; }
 .switch::after {
   content: '';
   position: absolute;
-  top: 3px; left: 3px;
+  top: 2px; left: 2px;
   width: 16px; height: 16px;
   border-radius: 50%;
   background: var(--text-2);
@@ -524,7 +526,7 @@ button { cursor: pointer; }
   -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), var(--inner);
   color: var(--text);
   padding: 0;
 }
@@ -547,12 +549,12 @@ button { cursor: pointer; }
 .popup { padding: 14px 16px 14px; }
 .popup-top { display: flex; gap: 12px; align-items: flex-start; padding-right: 26px; }
 .popup-icon {
-  width: 38px; height: 38px;
+  width: 40px; height: 40px;
   flex: none;
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: var(--surface-3);
+  background: var(--gold-dim);
   border: 1px solid var(--line);
 }
 .popup-icon img { max-width: 26px; max-height: 26px; }
@@ -590,10 +592,11 @@ button { cursor: pointer; }
   width: 100%;
   height: 40px;
   margin-top: 12px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--line-strong);
   background: var(--gold-dim);
   color: var(--gold);
+  box-shadow: var(--inner);
   font-weight: 600;
   font-size: 14px;
   display: inline-flex;
@@ -611,11 +614,12 @@ button { cursor: pointer; }
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 7px;
   color: var(--text);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
-  padding: 5px 10px;
+  letter-spacing: 0.01em;
+  padding: 4px 9px;
   box-shadow: var(--shadow);
 }
 .leaflet-tooltip::before { display: none; }
@@ -634,9 +638,8 @@ button { cursor: pointer; }
 }
 .loading.hide { opacity: 0; visibility: hidden; }
 .loading-mark {
-  width: 44px; height: 44px;
-  background: var(--gold);
-  clip-path: polygon(50% 0, 100% 100%, 0 100%, 50% 0, 50% 50%, 25% 100%, 75% 100%, 50% 50%);
+  width: 48px; height: 42px;
+  fill: var(--gold);
   animation: breathe 1.6s ease-in-out infinite;
 }
 .loading-text {
@@ -675,8 +678,11 @@ button { cursor: pointer; }
   .panel-head { padding-top: 12px; }
   .scrim { display: none; }
 
-  /* Keep the realm switch clear of the open panel */
-  body.panel-open .realm-switch { transform: translateX(calc(-50% - (var(--panel-w) + var(--gutter)) / 2)); }
+  /* Realm switch joins the top bar on wide screens */
+  .realm-switch {
+    top: calc(var(--gutter) + var(--sat));
+    bottom: auto;
+  }
 
   .layer-row { height: 38px; }
   .group-toggle { height: 40px; }

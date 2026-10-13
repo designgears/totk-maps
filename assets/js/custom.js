@@ -79,6 +79,9 @@ class TotkMapManager {
     try {
       const saved = JSON.parse(localStorage.getItem(CONFIG.STATE_KEY) || 'null');
       if (saved && typeof saved === 'object') return { ...defaults, ...saved };
+      // First run on the new UI: honour the legacy zoom-scaling preference
+      const legacy = localStorage.getItem('iconZoomScaling');
+      if (legacy !== null) defaults.iconZoomScaling = JSON.parse(legacy) !== false;
     } catch (_) { /* ignore */ }
     return defaults;
   }
@@ -164,8 +167,8 @@ class TotkMapManager {
         if (p.category === 'Labels') return;
         layer.feature = feature;
         if (p.title) {
-          layer.bindPopup(() => this.popupHtml(layer), { closeButton: true, maxWidth: 320, autoPanPadding: [24, 72] });
-          if (this.canHover) layer.bindTooltip(p.title, { direction: 'top', offset: [0, -12], opacity: 1 });
+          layer.bindPopup(() => this.popupHtml(layer), { closeButton: true, maxWidth: 320, offset: [0, -14], autoPanPaddingTopLeft: [20, 72], autoPanPaddingBottomRight: [20, 84] });
+          if (this.canHover) layer.bindTooltip(p.title, { direction: 'top', offset: [0, -18], opacity: 1 });
         }
         layer.on('completechange', () => this.onCompleteChange(layer));
         this.groupFor(p.map, p.category, p.subcat).addLayer(layer);
@@ -508,6 +511,7 @@ class TotkMapManager {
   onPopupOpen(e) {
     const btn = e.popup.getElement()?.querySelector('[data-complete]');
     const layer = e.popup._source;
+    if (layer && layer.closeTooltip) layer.closeTooltip();
     if (!btn || !layer) return;
     btn.addEventListener('click', () => {
       layer.setComplete(!layer.options.completed);

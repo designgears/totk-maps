@@ -4,7 +4,9 @@ L.CanvasMarker = L.Path.extend({
         iconAnchor: false,
         bringToFront: 'click',
         zoomScaling: true,
-        minZoomScale: 0.2,
+        minZoomScale: 0.5,
+        hitPadding: 4,
+        minHitSize: 24,
         maxZoomScale: 1.0,
         baseZoom: 7
     },
@@ -50,6 +52,18 @@ L.CanvasMarker = L.Path.extend({
 
         this.on(this.options.bringToFront, () => {
             this.bringToFront();
+        });
+
+        // Hover halo so it is obvious which marker will be clicked
+        this.on('mouseover', () => {
+            if (this._hovered) return;
+            this._hovered = true;
+            this.redraw();
+        });
+        this.on('mouseout', () => {
+            if (!this._hovered) return;
+            this._hovered = false;
+            this.redraw();
         });
     },
 
@@ -169,22 +183,25 @@ L.CanvasMarker = L.Path.extend({
     },
 
     _containsPoint(point) {
+        if (!this._icon || !this._icon.width) return false;
         const scale = this._getCurrentScale();
-        const scaledWidth = Math.round(this._icon.width * scale);
-        const scaledHeight = Math.round(this._icon.height * scale);
-        const scaledAnchorX = Math.round(this._icon.anchorWidth * scale);
-        const scaledAnchorY = Math.round(this._icon.anchorHeight * scale);
+        const w = this._icon.width * scale;
+        const h = this._icon.height * scale;
+        const ax = this._icon.anchorWidth * scale;
+        const ay = this._icon.anchorHeight * scale;
 
-        const halfWidth = Math.round(scaledWidth / 2);
-        const halfHeight = Math.round(scaledHeight / 2);
+        // Visible icon box, then grow it to a comfortable minimum target size
+        const pad = this.options.hitPadding;
+        const minHalf = this.options.minHitSize / 2;
+        const left = this._point.x - ax;
+        const top = this._point.y - ay;
+        const cx = left + w / 2;
+        const cy = top + h / 2;
+        const halfW = Math.max(w / 2 + pad, minHalf);
+        const halfH = Math.max(h / 2 + pad, minHalf);
 
-        const adjustedX = point.x - (halfWidth - scaledAnchorX);
-        const adjustedY = point.y - (halfHeight - scaledAnchorY);
-
-        return adjustedX <= this._point.x + halfWidth &&
-            adjustedX >= this._point.x - halfWidth &&
-            adjustedY <= this._point.y + halfHeight &&
-            adjustedY >= this._point.y - halfHeight;
+        return point.x >= cx - halfW && point.x <= cx + halfW &&
+            point.y >= cy - halfH && point.y <= cy + halfH;
     },
 
 });
@@ -210,6 +227,20 @@ L.Canvas.include({
         const scaledHeight = Math.round(layer._icon.height * scale);
         const scaledAnchorX = Math.round(layer._icon.anchorWidth * scale);
         const scaledAnchorY = Math.round(layer._icon.anchorHeight * scale);
+
+        // Hover halo behind the icon
+        if (layer._hovered) {
+            const r = Math.max(scaledWidth, scaledHeight) / 2 + 5;
+            const hx = x - scaledAnchorX + scaledWidth / 2;
+            const hy = y - scaledAnchorY + scaledHeight / 2;
+            ctx.beginPath();
+            ctx.arc(hx, hy, r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(245, 200, 75, 0.22)';
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = 'rgba(245, 200, 75, 0.9)';
+            ctx.stroke();
+        }
 
         // Draw the main icon with pixel-aligned positioning
         if (layer.options.completed) ctx.globalAlpha = 0.55;
