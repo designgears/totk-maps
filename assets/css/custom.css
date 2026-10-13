@@ -245,8 +245,9 @@ button { cursor: pointer; }
   max-height: min(78dvh, 720px);
   display: flex;
   flex-direction: column;
-  isolation: isolate;
-  background: rgba(10, 15, 27, 0.92);
+  /* No backdrop blur here: a blurred layer under a long list makes the
+     rows re-rasterise (and flicker) whenever the map repaints beneath it. */
+  background: linear-gradient(180deg, rgba(16, 22, 36, 0.98), rgba(9, 13, 23, 0.98));
   border: 1px solid var(--line);
   border-bottom: 0;
   border-radius: 16px 16px 0 0;
@@ -255,19 +256,9 @@ button { cursor: pointer; }
   transform: translateY(calc(100% + 20px));
   transition: transform 0.4s var(--ease);
 }
-/* Blur lives on a pseudo-element so repaints of the map underneath
-   (e.g. clearing every marker) never flash through the panel itself. */
-.panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  pointer-events: none;
-}
 .panel.open { transform: translateY(0); }
+/* Bulk changes (All / None / realm switch) apply instantly */
+.panel.no-anim *, .panel.no-anim *::after { transition: none !important; }
 
 .panel-grip {
   width: 40px; height: 4px;

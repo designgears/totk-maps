@@ -427,10 +427,21 @@ class TotkMapManager {
 
   setAll(on) {
     const categories = this.overlays[this.realm] || {};
-    Object.entries(categories).forEach(([category, subcats]) => {
-      Object.keys(subcats).forEach((subcat) => this.setLayer(category, subcat, on, { quiet: true }));
+    this.withoutAnimation(() => {
+      Object.entries(categories).forEach(([category, subcats]) => {
+        Object.keys(subcats).forEach((subcat) => this.setLayer(category, subcat, on, { quiet: true }));
+      });
+      this.afterLayerChange();
     });
-    this.afterLayerChange();
+  }
+
+  // Run a bulk UI update with panel transitions disabled for that frame
+  withoutAnimation(fn) {
+    this.panel.classList.add('no-anim');
+    fn();
+    // Force style flush so the transition-less state is committed, then re-enable
+    void this.panel.offsetWidth;
+    requestAnimationFrame(() => requestAnimationFrame(() => this.panel.classList.remove('no-anim')));
   }
 
   afterLayerChange() {
