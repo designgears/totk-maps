@@ -245,9 +245,8 @@ button { cursor: pointer; }
   max-height: min(78dvh, 720px);
   display: flex;
   flex-direction: column;
-  background: var(--surface);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
+  isolation: isolate;
+  background: rgba(10, 15, 27, 0.92);
   border: 1px solid var(--line);
   border-bottom: 0;
   border-radius: 16px 16px 0 0;
@@ -255,7 +254,18 @@ button { cursor: pointer; }
   padding-bottom: var(--sab);
   transform: translateY(calc(100% + 20px));
   transition: transform 0.4s var(--ease);
-  will-change: transform;
+}
+/* Blur lives on a pseudo-element so repaints of the map underneath
+   (e.g. clearing every marker) never flash through the panel itself. */
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  pointer-events: none;
 }
 .panel.open { transform: translateY(0); }
 
